@@ -12,3 +12,4 @@ C:\Users\rodri\Projects\alura\csharp\projeto-musical\obj\Debug\net8.0\refint\pro
 C:\Users\rodri\Projects\alura\csharp\projeto-musical\obj\Debug\net8.0\projeto-musical.pdb
 C:\Users\rodri\Projects\alura\csharp\projeto-musical\obj\Debug\net8.0\projeto-musical.genruntimeconfig.cache
 C:\Users\rodri\Projects\alura\csharp\projeto-musical\obj\Debug\net8.0\ref\projeto-musical.dll
+C:\Users\rodri\Projects\alura\csharp\projeto-musical\obj\Debug\net8.0\projeto-musical.sourcelink.json
