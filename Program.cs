@@ -1,60 +1,46 @@
-﻿using Menus;
-using Modelos;
+﻿using Modelos;
+using System.Text.Json;
+using Filtros;
 
-Banda ira = new Banda("Ira!");
-ira.AdicionarNota(new Avaliacao(10));
-ira.AdicionarNota(new Avaliacao(8));
-ira.AdicionarNota(new Avaliacao(6));
-Banda beatles = new("The Beatles");
+using (HttpClient client = new HttpClient())
+{
+    try
+    {
+        string resposta = await client.GetStringAsync("https://guilhermeonrails.github.io/api-csharp-songs/songs.json");
+        var musicas = JsonSerializer.Deserialize<List<Musica>>(resposta)!;
 
-Dictionary<string, Banda> bandasRegistradas = new();
-bandasRegistradas.Add(ira.Nome, ira);
-bandasRegistradas.Add(beatles.Nome, beatles);
+        LinqFilter.FiltrarMusicasEmCSharp(musicas);
 
-Dictionary<int, Menu> opcoes = new();
-opcoes.Add(1, new MenuRegistrarBanda());
-opcoes.Add(2, new MenuRegistrarAlbum());
-opcoes.Add(3, new MenuMostrarBandas());
-opcoes.Add(4, new MenuAvaliarBanda());
-opcoes.Add(5, new MenuAvaliarAlbum());
-opcoes.Add(6, new MenuExibirDetalhes());
-opcoes.Add(-1, new MenuSair());
+        musicas[1].ExibirDetalhesDaMusica();
+        LinqFilter.FiltrarTodosOsGenerosMusicais(musicas);
+        LinqOrder.ExibirListaDeArtistasOrdenados(musicas);
+        //LinqFilter.FiltrarArtistasPorGeneroMusical(musicas, "rock");
+        //LinqFilter.FiltrarMusicasDeUmArtista(musicas, "U2");
 
-void ExibirLogo() {
-    Console.WriteLine(@"
 
-░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗  ░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
-██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝████╗░██║  ██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗
-╚█████╗░██║░░╚═╝██████╔╝█████╗░░█████╗░░██╔██╗██║  ╚█████╗░██║░░██║██║░░░██║██╔██╗██║██║░░██║
-░╚═══██╗██║░░██╗██╔══██╗██╔══╝░░██╔══╝░░██║╚████║  ░╚═══██╗██║░░██║██║░░░██║██║╚████║██║░░██║
-██████╔╝╚█████╔╝██║░░██║███████╗███████╗██║░╚███║  ██████╔╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝
-╚═════╝░░╚════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚══╝  ╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░
-");
-    Console.WriteLine("Boas vindas ao Screen Sound 2.0!");
-}
+        //var musicasPreferidasDoDaniel = new MusicasPreferidas("Daniel");
+        //musicasPreferidasDoDaniel.AdicionarMusicasFavoritas(musicas[1]);
+        //musicasPreferidasDoDaniel.AdicionarMusicasFavoritas(musicas[377]);
+        //musicasPreferidasDoDaniel.AdicionarMusicasFavoritas(musicas[4]);
+        //musicasPreferidasDoDaniel.AdicionarMusicasFavoritas(musicas[6]);
+        //musicasPreferidasDoDaniel.AdicionarMusicasFavoritas(musicas[1467]);
 
-void ExibirOpcoesDoMenu() {
-    ExibirLogo();
+        //var musicasPreferidasEmilly = new MusicasPreferidas("Emy");
 
-    Console.WriteLine("\nDigite 1 para registrar uma banda");
-    Console.WriteLine("Digite 2 para registrar o álbum de uma banda");
-    Console.WriteLine("Digite 3 para mostrar todas as bandas");
-    Console.WriteLine("Digite 4 para avaliar uma banda");
-    Console.WriteLine("Digite 5 para avaliar um álbum");
-    Console.WriteLine("Digite 6 para exibir os detalhes de uma banda");
-    Console.WriteLine("Digite -1 para sair");
+        //musicasPreferidasEmilly.AdicionarMusicasFavoritas(musicas[500]);
+        //musicasPreferidasEmilly.AdicionarMusicasFavoritas(musicas[637]);
+        //musicasPreferidasEmilly.AdicionarMusicasFavoritas(musicas[428]);
+        //musicasPreferidasEmilly.AdicionarMusicasFavoritas(musicas[13]);
+        //musicasPreferidasEmilly.AdicionarMusicasFavoritas(musicas[71]);
 
-    Console.Write("\nDigite a sua opção: ");
-    string opcaoEscolhida = Console.ReadLine()!;
-    int opcaoEscolhidaNumerica = int.Parse(opcaoEscolhida);
+        //musicasPreferidasEmilly.ExibirMusicasFavoritas();
 
-    if (opcoes.ContainsKey(opcaoEscolhidaNumerica)) {
-        Menu menuASerExibido = opcoes[opcaoEscolhidaNumerica];
-        menuASerExibido.Executar(bandasRegistradas);
-        if (opcaoEscolhidaNumerica > 0) ExibirOpcoesDoMenu();
-    } else {
-        Console.WriteLine("Opção inválida");
+        //musicasPreferidasEmilly.GerarArquivoJson();
+
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Temos um problema: {ex.Message}");
     }
 }
-
-ExibirOpcoesDoMenu();
